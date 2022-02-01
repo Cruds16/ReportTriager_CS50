@@ -1,7 +1,42 @@
+/* Fonts:
+font-family: 'PT Sans', sans-serif;
+font-family: 'Titillium Web', sans-serif; */
+
+/* colors:
+Ebony Clay #1F2F38
+Steel Blue #467FA8
+Glacier #73B0CA
+Empress #8B8084
+*/
+
 body {
-    color: blueviolet;
+    height: 100vh;
+    min-width: 680px;
 }
 
-h1 {
-    color:brown; 
+.bg-image {
+    background-image: url("/static/images/bulb-g148fb59e1_1920.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+.mainpage-bg h1 {
+    color: #e0ebf0;
+    text-align: left;
+    font-family: 'PT Sans', sans-serif;
+    font-weight: 700;
+    font-size: 6rem;
+    line-height: 90%;
+    padding-top: 46vh;
+    padding-left: 5vw;
+}
+
+.mainpage-login button{
+    padding: 20px;
+}
+
+.navbar {
+    margin: 3rem 0rem 1rem;
 }
