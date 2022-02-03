@@ -162,3 +162,5 @@ cython_debug/
 
 # folders with ideas
 .idea/ideas
+
+triager.db
