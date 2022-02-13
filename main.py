@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, flash
-from forms import RegisterUser, LoginUser
+from forms import RegisterUser, LoginUser, ReportForm
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
@@ -20,13 +20,50 @@ db = SQLAlchemy(app)
 
 # USERS TABLE
 class User(UserMixin, db.Model):
-    __tablename__ = "Users"
+    __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(500), nullable=False)
     email = db.Column(db.String(250), unique=True, nullable=False)
-    roles = db.Column(db.String(250))
 
+    # backref establishes a collection of Task objects on User called user_tasks
+    # It also establishes a .taskowner attribute on Task which will refer to the parent User object.
+    user_tasks = db.relationship("Task", backref='taskowner')
+
+# TASKS TABLE
+class Task(UserMixin, db.Model):
+    __tablename__ = "task"
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+
+    # Create Foreign Key : taskowner_id refers to the primary key "user.id" from the table 'user'
+    taskowner_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+
+    # Create Foreign Key: "report_id" refers to the primary key "report.id" in the table 'report'
+    report_id = db.Column(db.Integer, db.ForeignKey("report.id"))
+
+    task_name = db.Column(db.String(500), nullable=True)
+    due_date = db.Column(db.DateTime(timezone=False), nullable=True)
+    completed = db.Column(db.Boolean(), nullable=True)
+    comments = db.Column(db.String(500), nullable=True)
+
+
+class Report(UserMixin, db.Model):
+    __tablename__ = "report"
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    date_received = db.Column(db.Date, nullable=True)
+    day_zero = db.Column(db.Date, nullable=True)
+    case_id = db.Column(db.String(250), nullable=True)
+    case_version = db.Column(db.String(250), nullable=True)
+    other_case_id = db.Column(db.String(250), nullable=True)
+    serious = db.Column(db.String(250), nullable=True)
+    listed = db.Column(db.String(250), nullable=True)
+    expedited = db.Column(db.Boolean, nullable=True)
+    exchange = db.Column(db.Boolean, nullable=True)
+    comments = db.Column(db.String(500), nullable=True)
+
+    # backref establishes a collection of Task objects on Report called report_tasks
+    # It also establishes a .report attribute on Task which will refer to the parent Report object.
+    report_tasks = db.relationship("Task", backref="report")
 
 # creates db
 # db.create_all()
@@ -63,7 +100,7 @@ def home():
             db.session.add(new_user)
             db.session.commit()
 
-            flash("User registration succesful")
+            flash("User registration successful")
             return render_template("title.html", register_form=register_form, login_form=login_form)
 
         elif login_form.validate_on_submit():
@@ -85,7 +122,33 @@ def home():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    reports_table = Report.query.all()
+    for report in reports_table:
+        print(report.day_zero)
+    return render_template("dashboard.html", reports=reports_table)
+
+
+@app.route("/new_report", methods=["GET", "POST"])
+@login_required
+def new_report():
+    report_form = ReportForm()
+    if request.method == "GET":
+        return render_template("new_report.html", form=report_form)
+    else:
+        new_report = Report(date_received=report_form.date_received.data,
+                            day_zero=report_form.day_zero.data,
+                            case_id=report_form.case_id.data,
+                            case_version=report_form.case_version.data,
+                            other_case_id=report_form.other_case_id.data,
+                            serious=report_form.serious.data,
+                            listed=report_form.listed.data,
+                            expedited=report_form.expedited.data,
+                            exchange=report_form.exchange.data,
+                            comments=report_form.comments.data)
+        db.session.add(new_report)
+        db.session.commit()
+
+        return redirect("/dashboard")
 
 
 @app.route("/logout")

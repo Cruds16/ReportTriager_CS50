@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Bootstrap 5 CSS -->
@@ -15,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Spartan:wght@600;700;900&family=Titillium+Web:wght@400;600;900&display=swap" rel="stylesheet">
-    <title>Dashboard</title>
+    <title>New Report</title>
 </head>
 <body>
     <main>
@@ -54,68 +53,34 @@
         </div>
       </div>
       <div class="b-example-divider"></div>
-    
+      
       <div class="container-fluid p-0" >
-        <div class="row w-100 m-0">
-            <div class="col-5">
-                <div class="dashboard-todo">
-                <h2>To Do's</h2>
-                <ul>
-                    <li>Task 1</li>
-                    <li>Task 2</li>
-                    <li>Task 3</li>
-                    <li>Task 4</li>
-                    <li>Task 5</li>
-                </ul>
-                </div>
-            </div>
-            <div class="col-7">
-                <div class="dashboard-text justify-content-center">
-                <h1>HI, {{ current_user.username | upper }}!</h1>
-                <h2>CHECK OUT WHAT IS GOING ON IN THE PROJECT</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row w-100 m-0">
-            <div class="col-12">
-                <div class="dashboard-table">
-                <table class="table table-hover table-responsive">
-                    <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Safety Date Receipt</th>
-                          <th scope="col">Day 0</th>
-                          <th scope="col">Case Version</th>
-                          <th scope="col">Case ID</th>
-                          <th scope="col">Other Case Identifiers</th>
-                          <th scope="col">Seriousness</th>
-                          <th scope="col">Listedness</th>
-                          <th scope="col">Expedited Reporting</th>
-                          <th scope="col">Exchange with Partners</th>
-                        </tr>
-                      </thead>
-                      <tbody>   
-                        {% for report in reports %}
-                        <tr>
-                            <th scope="row">{{ report.id }}</th>
-                            <td>{{ report.date_received }}</td>
-                            <td>{{ report.day_zero }}</td>
-                            <td>{{ report.case_id }}</td>
-                            <td>{{ report.case_version }}</td>
-                            <td>{{ report.other_case_id }}</td>
-                            <td>{{ report.serious }}</td>
-                            <td>{{ report.listed }}</td>
-                            <td>{{ report.expedited }}</td>
-                            <td>{{ report.exchange }}</td>
-                        </tr>
-                        {% endfor %}
-                      </tbody>
-                </table>
-                </div>
-            </div>
-        </div> 
-      </div>
-
+        <h1>Add new report</h1>
+        <form class="form form-horizontal" method="post" role="form">
+          {{ form.hidden_tag() }}
+          {{ form.csrf_token }}
+          {{ form.date_received.label }}
+          {{ form.date_received }}
+          {{ form.day_zero.label }}
+          {{ form.day_zero }}
+          {{ form.case_version.label }}
+          {{ form.case_version }}
+          {{ form.case_id.label }}
+          {{ form.case_id }}
+          {{ form.other_case_id.label }}
+          {{ form.other_case_id }}
+          {{ form.serious.label }}
+          {{ form.serious }}
+          {{ form.listed.label }}
+          {{ form.listed }}
+          {{ form.expedited.label }}
+          {{ form.expedited }}
+          {{ form.exchange.label }}
+          {{ form.exchange }}
+          {{ form.comments.label }}
+          {{ form.comments }}
+          {{ form.submit }}
+        </form>
     </main>
 
 
