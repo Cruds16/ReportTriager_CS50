@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, flash
-from forms import RegisterUser, LoginUser, ReportForm
+from forms import RegisterUser, LoginUser, ReportForm, AddTaskForm
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
@@ -42,7 +42,7 @@ class Task(UserMixin, db.Model):
     report_id = db.Column(db.Integer, db.ForeignKey("report.id"))
 
     task_name = db.Column(db.String(500), nullable=True)
-    due_date = db.Column(db.DateTime(timezone=False), nullable=True)
+    due_date = db.Column(db.Date, nullable=True)
     completed = db.Column(db.Boolean(), nullable=True)
     comments = db.Column(db.String(500), nullable=True)
 
@@ -123,9 +123,8 @@ def home():
 @login_required
 def dashboard():
     reports_table = Report.query.all()
-    for report in reports_table:
-        print(report.day_zero)
-    return render_template("dashboard.html", reports=reports_table)
+    user_todos = Task.query.filter_by(taskowner_id=current_user.id).all()
+    return render_template("dashboard.html", reports=reports_table, user_todos=user_todos)
 
 
 @app.route("/new_report", methods=["GET", "POST"])
@@ -149,6 +148,50 @@ def new_report():
         db.session.commit()
 
         return redirect("/dashboard")
+
+
+@app.route("/report/<id>", methods=["GET", "POST"])
+@login_required
+def report(id):
+    report = Report.query.filter_by(id=id).first()
+
+    report_details_form = ReportForm(date_received=report.date_received, day_zero=report.day_zero,
+                                     case_id=report.case_id, case_version=report.case_version,
+                                     other_case_id=report.other_case_id, serious=report.serious,
+                                     listed=report.listed, expedited=report.expedited,
+                                     exchange=report.exchange, comments=report.comments)
+    report_details_form.submit.label.text = 'Update Report'
+
+    report_task_form = AddTaskForm()
+
+    user_list = User.query.all()
+    user_choices = [(user.id, user.username) for user in user_list]
+
+    report_task_form.task_owner.choices = user_choices
+
+    if request.method == "GET":
+        return render_template("report.html", form=report_details_form, new_task=report_task_form)
+    else:
+        if report_details_form.validate_on_submit():
+            report.date_received = report_details_form.date_received.data
+            report.day_zero = report_details_form.day_zero.data
+            report.case_id = report_details_form.case_id.data
+            report.case_version = report_details_form.case_version.data
+            report.other_case_id = report_details_form.other_case_id.data
+            report.serious = report_details_form.serious.data
+            report.listed = report_details_form.listed.data
+            report.expedited = report_details_form.expedited.data
+            report.exchange = report_details_form.exchange.data
+            report.comments = report_details_form.comments.data
+            db.session.commit()
+
+        if report_task_form.validate_on_submit():
+            new_task = Task(taskowner_id=report_task_form.task_owner.data, report_id=id,
+                            task_name=report_task_form.task_name.data, due_date=report_task_form.due_date.data,
+                            completed=False, comments=report_task_form.comments.data)
+            db.session.add(new_task)
+            db.session.commit()
+    return redirect(f"/report/{report.id}")
 
 
 @app.route("/logout")

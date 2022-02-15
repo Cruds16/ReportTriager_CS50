@@ -54,31 +54,41 @@
       </div>
       <div class="b-example-divider"></div>
       
-      <div class="container-fluid p-0" >
+      <div class="container-fluid p-0 new-report-page">
         <h1>Add new report</h1>
         <form class="form form-horizontal" method="post" role="form">
           {{ form.hidden_tag() }}
           {{ form.csrf_token }}
           {{ form.date_received.label }}
           {{ form.date_received }}
+          <br>
           {{ form.day_zero.label }}
           {{ form.day_zero }}
+          <br>
           {{ form.case_version.label }}
           {{ form.case_version }}
+          <br>
           {{ form.case_id.label }}
           {{ form.case_id }}
+          <br>
           {{ form.other_case_id.label }}
           {{ form.other_case_id }}
+          <br>
           {{ form.serious.label }}
           {{ form.serious }}
+          <br>
           {{ form.listed.label }}
           {{ form.listed }}
+          <br>
           {{ form.expedited.label }}
           {{ form.expedited }}
+          <br>
           {{ form.exchange.label }}
           {{ form.exchange }}
+          <br>
           {{ form.comments.label }}
           {{ form.comments }}
+          <br>
           {{ form.submit }}
         </form>
     </main>

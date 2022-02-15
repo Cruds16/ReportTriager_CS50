@@ -22,9 +22,9 @@ class ReportForm(FlaskForm):
     day_zero = DateField("Day Zero", validators=[DataRequired()])
     case_id = StringField("Case ID")
     case_version = SelectField("Case version", choices=[("INI", "Initial"), ("FU1", "Follow-up 1"),
-                                                        ("FU1", "Follow-up 1"), ("FU2", "Follow-up 2"),
-                                                        ("FU3", "Follow-up 3"), ("FU4", "Follow-up 4"),
-                                                        ("FU5", "Follow-up 5"), ("FU1", "Follow-up 6")])
+                                                        ("FU2", "Follow-up 2"), ("FU3", "Follow-up 3"),
+                                                        ("FU4", "Follow-up 4"), ("FU5", "Follow-up 5"),
+                                                        ("FU6", "Follow-up 6"), ("FU7", "Follow-up 7")])
     other_case_id = StringField("Other Case IDs")
     serious = BooleanField("Serious")
     listed = BooleanField("Listed")
@@ -32,3 +32,14 @@ class ReportForm(FlaskForm):
     exchange = BooleanField("Exchange with partners")
     comments = StringField("Comments")
     submit = SubmitField("Add Report")
+
+
+class AddTaskForm(FlaskForm):
+    task_owner = SelectField("Responsible person", validators=[DataRequired()])
+    task_name = SelectField("Task", choices=[("DE", "Data Entry"), ("QC", "Quality Check"),
+                                             ("MR", "Medical Review"), ("Exp", "Submission to RA"),
+                                             ("Exc", "Exchange with Partners"), ("FIN", "Case Finalization")])
+    due_date = DateField("Due Date", validators=[DataRequired()])
+    comments = StringField("Comments")
+    submit = SubmitField("Add Task")
+
