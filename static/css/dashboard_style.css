@@ -104,6 +104,7 @@ h2 {
   background: transparent;
   border: none;
   border-bottom: 1px solid #000;
+  width: auto !important;
 }
 
 .new-report-page form input[type=submit] {
@@ -114,4 +115,50 @@ h2 {
   color: #FFF;
   border: solid;
   border: 1px;
+}
+
+.report-details form input, select{
+  margin-bottom: 0.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000;
+  width: 100%;
+}
+
+.report-details form input[type=submit] {
+  margin-top: 0.75rem;
+  padding: 10px;
+  background: solid;
+  background-color: #1F2F38;
+  color: #FFF;
+  border: solid;
+  border: 1px;
+}
+
+.table-new-report {
+  padding: 20px;
+}
+
+.todo-card {
+  text-align: center;
+  margin-bottom: 1rem !important;
+}
+
+.report-details h2 {
+  margin: 3rem auto 4rem auto;
+  text-align: center;
+}
+
+.delete-report {
+  text-align: center;
+  margin: 2rem auto;
+}
+
+.delete-report h2{
+  margin: 3rem auto 0rem auto !important;
+}
+
+.center {
+  margin: auto;
+  width: 80%;
 }

@@ -43,3 +43,14 @@ class AddTaskForm(FlaskForm):
     comments = StringField("Comments")
     submit = SubmitField("Add Task")
 
+
+class EditTaskForm(FlaskForm):
+    task_owner = SelectField("Responsible person", validators=[DataRequired()])
+    task_name = SelectField("Task", choices=[("DE", "Data Entry"), ("QC", "Quality Check"),
+                                             ("MR", "Medical Review"), ("Exp", "Submission to RA"),
+                                             ("Exc", "Exchange with Partners"), ("FIN", "Case Finalization")])
+    due_date = DateField("Due Date", validators=[DataRequired()])
+    completed = BooleanField("Completed")
+    comments = StringField("Comments")
+    submit = SubmitField("Edit Task")
+

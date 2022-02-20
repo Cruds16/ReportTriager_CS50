@@ -26,12 +26,12 @@
         </a>
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
           <li class="nav-item">
-            <a href="{{ url_for('dashboard') }}" class="nav-link py-3" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+            <a href="{{ url_for('dashboard') }}" class="nav-link py-3" title="Dashboard" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
               <img class="bi" width="34" height="34" src="/static/images/dashboard1.png" alt="Dashboard"></img>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link py-3" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Task list">
+            <a href="{{ url_for('task_list') }}" class="nav-link py-3" title="Task List" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Task list">
                 <img class="bi" width="34" height="34" src="/static/images/task_list.png" alt="Task List"></img>
             </a>
           </li>
@@ -48,17 +48,18 @@
           <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
             <li><a class="dropdown-item" href="#">Account Settings</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('logout') }}">Sign out</a></li>
           </ul>
         </div>
       </div>
       <div class="b-example-divider"></div>
       
       <div class="container-fluid p-0 new-report-page">
-        <h1>Add new report</h1>
+        <h1>NEW REPORT</h1>
         <form class="form form-horizontal" method="post" role="form">
           {{ form.hidden_tag() }}
           {{ form.csrf_token }}
+
           {{ form.date_received.label }}
           {{ form.date_received }}
           <br>

@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect, flash
-from forms import RegisterUser, LoginUser, ReportForm, AddTaskForm
+from forms import RegisterUser, LoginUser, ReportForm, AddTaskForm, EditTaskForm
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
+from sqlalchemy import desc
 
 # Configure Flask app
 app = Flask(__name__)
@@ -169,8 +170,13 @@ def report(id):
 
     report_task_form.task_owner.choices = user_choices
 
+    report_tasks = Task.query.filter_by(report_id=id).all()
+
     if request.method == "GET":
-        return render_template("report.html", form=report_details_form, new_task=report_task_form)
+        return render_template("report.html", form=report_details_form,
+                               new_task=report_task_form,
+                               report_tasks=report_tasks,
+                               report_id=id)
     else:
         if report_details_form.validate_on_submit():
             report.date_received = report_details_form.date_received.data
@@ -195,9 +201,80 @@ def report(id):
 
 
 @app.route("/logout")
+@login_required
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route("/delete_task/<task_id>")
+@login_required
+def delete_task(task_id):
+    task_to_delete = Task.query.filter_by(id=task_id).first()
+    print(task_to_delete)
+    db.session.delete(task_to_delete)
+    db.session.commit()
+    return redirect("/task_list")
+
+
+@app.route("/complete_task/<task_id>")
+@login_required
+def complete_task(task_id):
+    completed_task = Task.query.filter_by(id=task_id).first()
+    completed_task.completed = True
+    db.session.commit()
+    return redirect(request.referrer)
+
+
+@app.route("/delete_report/<report_id>")
+@login_required
+def delete_report(report_id):
+    report_to_delete = Report.query.filter_by(id=report_id).first()
+    db.session.delete(report_to_delete)
+    db.session.commit()
+    return redirect("/dashboard")
+
+
+@app.route("/task_list")
+@login_required
+def task_list():
+    your_tasks = Task.query.filter_by(taskowner_id=current_user.id).all()
+    all_tasks = Task.query.order_by("completed").all()
+    return render_template("task_list.html", your_tasks=your_tasks, all_tasks=all_tasks)
+
+
+@app.route("/task/<task_id>", methods=["GET", "POST"])
+@login_required
+def edit_task(task_id):
+    task_to_edit = Task.query.filter_by(id=task_id).first()
+
+    # prepares list of choices for taskowner SelectField
+    user_list = User.query.all()
+    user_choices = [(user.id, user.username) for user in user_list]
+    # Order user_list with the current taskowner at first place
+    # - allows accurate pre-population of the field in the flaskform
+    select_prep_index = user_choices.index((task_to_edit.taskowner_id, task_to_edit.taskowner.username))
+    user_choices[0], user_choices[select_prep_index] = user_choices[select_prep_index], user_choices[0]
+
+    edit_task_form = EditTaskForm(task_name=task_to_edit.task_name,
+                                  due_date=task_to_edit.due_date,
+                                  comments=task_to_edit.comments,
+                                  completed=task_to_edit.completed)
+
+    edit_task_form.task_owner.choices = user_choices
+
+    if request.method == "GET":
+        return render_template("task.html", form=edit_task_form, task=task_to_edit)
+    else:
+        if edit_task_form.validate_on_submit():
+            task_to_edit.task_name = edit_task_form.task_name.data
+            task_to_edit.taskowner_id = edit_task_form.task_owner.data
+            task_to_edit.due_date = edit_task_form.due_date.data
+            task_to_edit.comments = edit_task_form.comments.data
+            task_to_edit.completed = edit_task_form.completed.data
+            db.session.commit()
+
+        return redirect("/task_list")
 
 
 if __name__ == "__main__":
