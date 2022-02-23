@@ -13,6 +13,7 @@ Empress #8B8084
 body {
   min-height: 100vh;
   min-height: -webkit-fill-available;
+  overflow-y: hidden;
 }
 
 html {
@@ -26,6 +27,7 @@ main {
   height: -webkit-fill-available;
   overflow-x: auto;
   overflow-y: hidden;
+
 }
 
 h1 {
@@ -161,4 +163,27 @@ h2 {
 .center {
   margin: auto;
   width: 80%;
+}
+
+.scrollable {
+  overflow-y: auto !important;
+  height: 100vh;
+}
+
+#tasklist h1 {
+  padding: 3rem 3rem 1rem;
+}
+
+#tasklist hr {
+  width: 50%;
+  margin: 1rem auto 1rem auto;
+  height: 3px;
+}
+
+.tasklist_box {
+  padding: 1rem 3rem 1rem;
+}
+
+#edit-task h2 {
+  padding: 3rem;
 }

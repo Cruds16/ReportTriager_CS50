@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, DateField, SelectField
-from wtforms.validators import DataRequired, Email
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, DateField, SelectField, TextAreaField
+from wtforms.validators import DataRequired, Email, Length
 
 
 class RegisterUser(FlaskForm):
@@ -21,36 +21,36 @@ class ReportForm(FlaskForm):
     date_received = DateField("Date Received", validators=[DataRequired()])
     day_zero = DateField("Day Zero", validators=[DataRequired()])
     case_id = StringField("Case ID")
-    case_version = SelectField("Case version", choices=[("INI", "Initial"), ("FU1", "Follow-up 1"),
-                                                        ("FU2", "Follow-up 2"), ("FU3", "Follow-up 3"),
-                                                        ("FU4", "Follow-up 4"), ("FU5", "Follow-up 5"),
-                                                        ("FU6", "Follow-up 6"), ("FU7", "Follow-up 7")])
+    case_version = SelectField("Case version", choices=["Initial", "Follow-up 1",
+                                                        "Follow-up 2", "Follow-up 3",
+                                                        "Follow-up 4", "Follow-up 5",
+                                                        "Follow-up 6", "Follow-up 7"])
     other_case_id = StringField("Other Case IDs")
-    serious = BooleanField("Serious")
-    listed = BooleanField("Listed")
-    expedited = BooleanField("Expedited")
+    serious = SelectField("Serious", choices=['Serious', 'Non-serious', 'N/A'])
+    listed = SelectField("Listed", choices=['N/A', 'Listed', 'Unlisted'])
+    expedited = BooleanField("Expedited to RA")
     exchange = BooleanField("Exchange with partners")
-    comments = StringField("Comments")
+    comments = TextAreaField("Comments", validators=[Length(max=500)])
     submit = SubmitField("Add Report")
 
 
 class AddTaskForm(FlaskForm):
     task_owner = SelectField("Responsible person", validators=[DataRequired()])
-    task_name = SelectField("Task", choices=[("DE", "Data Entry"), ("QC", "Quality Check"),
-                                             ("MR", "Medical Review"), ("Exp", "Submission to RA"),
-                                             ("Exc", "Exchange with Partners"), ("FIN", "Case Finalization")])
+    task_name = SelectField("Task", choices=["Data Entry", "Quality Check",
+                                             "Medical Review", "Submission to RA",
+                                             "Exchange with Partners", "Case Finalization"])
     due_date = DateField("Due Date", validators=[DataRequired()])
-    comments = StringField("Comments")
+    task_comments = TextAreaField("Comments", validators=[Length(max=500)])
     submit = SubmitField("Add Task")
 
 
 class EditTaskForm(FlaskForm):
     task_owner = SelectField("Responsible person", validators=[DataRequired()])
-    task_name = SelectField("Task", choices=[("DE", "Data Entry"), ("QC", "Quality Check"),
-                                             ("MR", "Medical Review"), ("Exp", "Submission to RA"),
-                                             ("Exc", "Exchange with Partners"), ("FIN", "Case Finalization")])
+    task_name = SelectField("Task", choices=["Data Entry", "Quality Check",
+                                             "Medical Review", "Submission to RA",
+                                             "Exchange with Partners", "Case Finalization"])
     due_date = DateField("Due Date", validators=[DataRequired()])
     completed = BooleanField("Completed")
-    comments = StringField("Comments")
-    submit = SubmitField("Edit Task")
+    task_comments = TextAreaField("Comments", validators=[Length(max=500)])
+    submit = SubmitField("Update Task")
 

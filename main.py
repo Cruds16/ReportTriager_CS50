@@ -28,8 +28,9 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(250), unique=True, nullable=False)
 
     # backref establishes a collection of Task objects on User called user_tasks
-    # It also establishes a .taskowner attribute on Task which will refer to the parent User object.
+    # It also establishes a taskowner attribute on Task which will refer to the parent User object.
     user_tasks = db.relationship("Task", backref='taskowner')
+
 
 # TASKS TABLE
 class Task(UserMixin, db.Model):
@@ -45,7 +46,7 @@ class Task(UserMixin, db.Model):
     task_name = db.Column(db.String(500), nullable=True)
     due_date = db.Column(db.Date, nullable=True)
     completed = db.Column(db.Boolean(), nullable=True)
-    comments = db.Column(db.String(500), nullable=True)
+    task_comments = db.Column(db.String(500), nullable=True)
 
 
 class Report(UserMixin, db.Model):
@@ -194,7 +195,7 @@ def report(id):
         if report_task_form.validate_on_submit():
             new_task = Task(taskowner_id=report_task_form.task_owner.data, report_id=id,
                             task_name=report_task_form.task_name.data, due_date=report_task_form.due_date.data,
-                            completed=False, comments=report_task_form.comments.data)
+                            completed=False, task_comments=report_task_form.task_comments.data)
             db.session.add(new_task)
             db.session.commit()
     return redirect(f"/report/{report.id}")
@@ -211,7 +212,7 @@ def logout():
 @login_required
 def delete_task(task_id):
     task_to_delete = Task.query.filter_by(id=task_id).first()
-    print(task_to_delete)
+
     db.session.delete(task_to_delete)
     db.session.commit()
     return redirect("/task_list")
@@ -238,9 +239,11 @@ def delete_report(report_id):
 @app.route("/task_list")
 @login_required
 def task_list():
-    your_tasks = Task.query.filter_by(taskowner_id=current_user.id).all()
-    all_tasks = Task.query.order_by("completed").all()
-    return render_template("task_list.html", your_tasks=your_tasks, all_tasks=all_tasks)
+    your_tasks = Task.query.filter_by(taskowner_id=current_user.id, completed=False).all()
+    all_ongoing_tasks = Task.query.filter_by(completed=False).all()
+    all_completed_tasks = Task.query.filter_by(completed=True).all()
+    return render_template("task_list.html", your_tasks=your_tasks, all_ongoing_tasks=all_ongoing_tasks,
+                           all_completed_tasks=all_completed_tasks)
 
 
 @app.route("/task/<task_id>", methods=["GET", "POST"])
@@ -251,14 +254,14 @@ def edit_task(task_id):
     # prepares list of choices for taskowner SelectField
     user_list = User.query.all()
     user_choices = [(user.id, user.username) for user in user_list]
-    # Order user_list with the current taskowner at first place
-    # - allows accurate pre-population of the field in the flaskform
+    # Order user_list with the current taskowner at the first place
+    # this works as pre-population of the field with current taskowner name
     select_prep_index = user_choices.index((task_to_edit.taskowner_id, task_to_edit.taskowner.username))
     user_choices[0], user_choices[select_prep_index] = user_choices[select_prep_index], user_choices[0]
 
     edit_task_form = EditTaskForm(task_name=task_to_edit.task_name,
                                   due_date=task_to_edit.due_date,
-                                  comments=task_to_edit.comments,
+                                  task_comments=task_to_edit.task_comments,
                                   completed=task_to_edit.completed)
 
     edit_task_form.task_owner.choices = user_choices
@@ -270,7 +273,7 @@ def edit_task(task_id):
             task_to_edit.task_name = edit_task_form.task_name.data
             task_to_edit.taskowner_id = edit_task_form.task_owner.data
             task_to_edit.due_date = edit_task_form.due_date.data
-            task_to_edit.comments = edit_task_form.comments.data
+            task_to_edit.task_comments = edit_task_form.task_comments.data
             task_to_edit.completed = edit_task_form.completed.data
             db.session.commit()
 

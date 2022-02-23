@@ -15,9 +15,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Spartan:wght@600;700;900&family=Titillium+Web:wght@400;600;900&display=swap" rel="stylesheet">
-    <title>Dashboard</title>
+    <title>Report details</title>
 </head>
-<body>
+<body id="edit-task">
     <main>
     <!-- Side Nav (downloaded from https://getbootstrap.com/docs/5.0/examples/sidebars/) -->
     <div class="d-flex flex-column flex-shrink-0 bg-dark" style="width: 4.5rem">
@@ -55,58 +55,52 @@
       </div>
       <div class="b-example-divider"></div>
     
-      <div class="container-fluid p-0" >
-        <div class="row w-100 m-0">
-            <div class="col-5">
-                <div class="dashboard-todo">
-                <h2>Space for a nice illustration</h2>
+      <div class="container-fluid p-0">
+        <div class="row w-100 h-100 m-0">
+          <div class="col-6">    
+            <h2>EDIT TASK</h2>
+                <form class="form form-horizontal center" method="post" role="form">
+                  {{ form.hidden_tag() }}
+                  {{ form.csrf_token }}
+                  <table class="table table-borderless table-sm">
+                    <tr>
+                      <td>{{ form.task_name.label }}</td>
+                      <td>{{ form.task_name }}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ form.task_owner.label }} </td>
+                      <td>{{ form.task_owner }}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ form.due_date.label }}</td>
+                      <td>{{ form.due_date }}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ form.task_comments.label }}</td>
+                      <td>{{ form.task_comments }}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ form.completed.label }}</td>
+                      <td>{{ form.completed }}</td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td>{{ form.submit }}</td>
+                    </tr>
+                    </form>
+                    <tr>
+                      <td></td>
+                      <td>
+                        <form action="{{ url_for('delete_task', task_id=task.id) }}" method="get">
+                        <input type="submit" class="btn btn-outline-dark btn-sm" value="Delete Task"></input>
+                        </form>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
-            </div>
-            <div class="col-7">
-                <div class="dashboard-text justify-content-center">
-                <h1>HI, {{ current_user.username | upper }}!</h1>
-                <h2>CHECK OUT WHAT IS GOING ON IN THE PROJECT</h2>
-                </div>
-            </div>
+                  
+                  
         </div>
-        <div class="row w-100 m-0">
-            <div class="col-12">
-                <div class="dashboard-table">
-                <table class="table table-hover table-responsive tableFixHead" >
-                    <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Safety Date Receipt</th>
-                          <th scope="col">Day 0</th>
-                          <th scope="col">Case Version</th>
-                          <th scope="col">Case ID</th>
-                          <th scope="col">Other Case Identifiers</th>
-                          <th scope="col">Seriousness</th>
-                          <th scope="col">Listedness</th>
-                          <th scope="col">Expedited Reporting</th>
-                          <th scope="col">Exchange with Partners</th>
-                        </tr>
-                      </thead>
-                      <tbody>   
-                        {% for report in reports %}
-                        <tr>
-                            <th scope="row"><a href="{{ url_for('report', id=report.id ) }}">{{ report.id }}</a></th>
-                            <td>{{ report.date_received }}</td>
-                            <td>{{ report.day_zero }}</td>
-                            <td>{{ report.case_version }}</td>
-                            <td>{{ report.case_id }}</td>
-                            <td>{{ report.other_case_id }}</td>
-                            <td>{{ report.serious }}</td>
-                            <td>{{ report.listed }}</td>
-                            <td>{{ report.expedited }}</td>
-                            <td>{{ report.exchange }}</td>
-                        </tr>
-                        {% endfor %}
-                      </tbody>
-                </table>
-                </div>
-            </div>
-        </div> 
       </div>
 
     </main>
