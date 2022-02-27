@@ -18,43 +18,10 @@
 </head>
 <body>
     <main>
-    <!-- Side Nav (downloaded from https://getbootstrap.com/docs/5.0/examples/sidebars/) -->
-    <div class="d-flex flex-column flex-shrink-0 bg-dark" style="width: 4.5rem">
-        <a href="/" class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
-          <svg class="bi" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-          <span class="visually-hidden">Icon-only</span>
-        </a>
-        <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
-          <li class="nav-item">
-            <a href="{{ url_for('dashboard') }}" class="nav-link py-3" title="Dashboard" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
-              <img class="bi" width="34" height="34" src="/static/images/dashboard1.png" alt="Dashboard"></img>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ url_for('task_list') }}" class="nav-link py-3" title="Task List" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Task list">
-                <img class="bi" width="34" height="34" src="/static/images/task_list.png" alt="Task List"></img>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ url_for('new_report') }}" class="nav-link py-3" title="New Report" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="New Report">
-                <img class="bi" width="34" height="34" src="/static/images/new_report.png" alt="Add Report"></img>
-            </a>
-          </li>
-        </ul>
-        <div class="dropdown border-top">
-          <a href="#" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser3" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="mdo" width="24" height="24" class="rounded-circle">
-          </a>
-          <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
-            <li><a class="dropdown-item" href="#">Account Settings</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{{ url_for('logout') }}">Sign out</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="b-example-divider"></div>
+    <!-- Side Nav -->
+    {% include 'navbar.html' %}
       
-      <div class="container-fluid p-0 new-report-page">
+      <div class="container-fluid p-0 new-report-page scrollable">
         <h1>NEW REPORT</h1>
         <form class="form form-horizontal" method="post" role="form">
           {{ form.hidden_tag() }}

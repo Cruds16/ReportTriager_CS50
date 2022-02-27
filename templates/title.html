@@ -55,7 +55,7 @@
                 <div class="register-form container-fluid justify-content-center" id="register-form">
                     <form class="container-fluid justify-content-center" method="POST">
                         {{ register_form.csrf_token }}
-                        <table class="table table-hover table-dark justify-content-center">
+                        <table class="table table-hover table-dark table-borderless">
                             <tbody>
                                 <tr>
                                     <td>{{ register_form.username.label }}</td>
@@ -84,7 +84,7 @@
                 <div class="container-fluid justify-content-center login-form" id="login-form">
                     <form class="container-fluid justify-content-center" method="POST">
                         {{ login_form.csrf_token }}
-                        <table class="table table-hover table-dark">
+                        <table class="table table-hover table-borderless table-dark">
                         <tr>
                             <td>{{ login_form.username.label }}</td>
                             <td>{{ login_form.username }}</td>

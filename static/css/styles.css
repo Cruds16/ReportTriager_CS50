@@ -14,6 +14,8 @@ body {
     width: 100vw;
     min-height: -webkit-fill-available;
     min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .bg-image {
@@ -45,14 +47,37 @@ body {
 
 .login-form {
     visibility: visible;
+    position: relative;
+    top: 8%;
 }
 
 .register-form {
     visibility: collapse;
+    position: relative;
+    top: 8%;
 }
 
 .flash-message {
-    padding-top: 2rem;
+    padding-top: 10rem;
     color: #73B0CA;
     text-align: center;
 }
+
+.login-form form input, .register-form form input{
+    margin-bottom: 0.5rem;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #FFF;
+    width: 100%;
+    color: #FFF;
+  }
+  
+  .login-form form input[type=submit], .register-form form input[type=submit] {
+    margin-top: 0.75rem;
+    padding: 10px;
+    background: solid;
+    background-color: #1F2F38;
+    color: #FFF;
+    border: solid;
+    border: 1px;
+  }

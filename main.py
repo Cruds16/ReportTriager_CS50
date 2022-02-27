@@ -1,9 +1,8 @@
 from flask import Flask, render_template, request, redirect, flash
-from forms import RegisterUser, LoginUser, ReportForm, AddTaskForm, EditTaskForm
+from forms import RegisterUser, LoginUser, ReportForm, AddTaskForm, EditTaskForm, EditPasswordForm, DeleteAccountForm
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-from sqlalchemy import desc
 
 # Configure Flask app
 app = Flask(__name__)
@@ -87,12 +86,12 @@ def home():
 
             if not register_form.password.data == register_form.confirm_password.data:
                 flash("Passwords do not match")
-                return render_template("title.html", register_form=register_form, login_form=login_form)
+                return redirect("/")
 
             if User.query.filter_by(username=register_form.username.data).first()\
                     or User.query.filter_by(email=register_form.email.data).first():
                 flash("Username or email already registered")
-                return render_template("title.html", register_form=register_form, login_form=login_form)
+                return redirect("/")
 
             new_user = User(username=register_form.username.data,
                             password=generate_password_hash(password=register_form.password.data,
@@ -103,17 +102,17 @@ def home():
             db.session.commit()
 
             flash("User registration successful")
-            return render_template("title.html", register_form=register_form, login_form=login_form)
+            return redirect("/")
 
         elif login_form.validate_on_submit():
             user = User.query.filter_by(username=login_form.username.data).first()
             if not user:
                 flash("User does not exist, please register")
-                return render_template("title.html", register_form=register_form, login_form=login_form)
+                return redirect("/")
 
             if not check_password_hash(pwhash=user.password, password=login_form.password.data):
                 flash("Incorrect password")
-                return render_template("title.html", register_form=register_form, login_form=login_form)
+                return redirect("/")
 
             load_user(user.id)
             login_user(user)
@@ -278,6 +277,43 @@ def edit_task(task_id):
             db.session.commit()
 
         return redirect("/task_list")
+
+
+@app.route("/account_settings", methods = ["GET", "POST"])
+@login_required
+def account_settings():
+    edit_password_form = EditPasswordForm()
+    delete_account_form = DeleteAccountForm()
+    user = User.query.filter_by(id=current_user.id).first()
+
+    if request.method == "GET":
+        return render_template("account_settings.html", edit_password_form=edit_password_form,
+                               delete_account_form=delete_account_form)
+    else:
+        if edit_password_form.validate_on_submit():
+            if not check_password_hash(pwhash=user.password, password=edit_password_form.old_password.data):
+                flash("Incorrect password")
+                return redirect("/account_settings")
+            elif not edit_password_form.new_password.data == edit_password_form.confirm_password.data:
+                flash("Passwords do not match")
+                return redirect("/account_settings")
+            else:
+                user.password = generate_password_hash(password=edit_password_form.new_password.data,
+                                                       method="pbkdf2:sha256",
+                                                       salt_length=8)
+                db.session.commit()
+                flash("Password updated")
+                return redirect("/account_settings")
+
+        if delete_account_form.validate_on_submit():
+            if not check_password_hash(pwhash=user.password, password=delete_account_form.confirm_password.data):
+                flash("Incorrect password")
+                return redirect("/account_settings")
+            else:
+                db.session.delete(user)
+                db.session.commit()
+                flash("Account deleted")
+                return redirect("/")
 
 
 if __name__ == "__main__":

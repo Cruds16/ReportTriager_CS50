@@ -187,3 +187,36 @@ h2 {
 #edit-task h2 {
   padding: 3rem;
 }
+
+.account_settings_buttons {
+  text-align: center;
+  position: relative;
+  top: 40%;
+}
+
+.account_settings_buttons button {
+  width: 10rem;
+  margin: 0.75rem;
+}
+
+#edit-password-form {
+  visibility: collapse;
+  position: relative;
+  top: 30%;
+}
+
+#delete-account-form {
+  visibility: collapse;
+  position: relative;
+  top: 10%;
+}
+
+.account_forms h2, .account_forms p {
+  color:white;
+  margin: 0rem 0rem 3rem 2rem;
+}
+
+.flash-message {
+  color:white;
+  text-align: center;
+}

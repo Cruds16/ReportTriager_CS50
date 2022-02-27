@@ -54,3 +54,15 @@ class EditTaskForm(FlaskForm):
     task_comments = TextAreaField("Comments", validators=[Length(max=500)])
     submit = SubmitField("Update Task")
 
+
+class EditPasswordForm(FlaskForm):
+    old_password = PasswordField("Old password", validators=[DataRequired()])
+    new_password = PasswordField("New password", validators=[DataRequired()])
+    confirm_password = PasswordField("Confirm password", validators=[DataRequired()])
+    submit = SubmitField("Confirm")
+
+
+class DeleteAccountForm(FlaskForm):
+    confirm_password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Confirm")
+
