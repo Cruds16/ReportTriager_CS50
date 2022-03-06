@@ -14,6 +14,7 @@ body {
   min-height: 100vh;
   min-height: -webkit-fill-available;
   overflow-y: hidden;
+  min-width: 590px;
 }
 
 html {
@@ -79,8 +80,8 @@ h2 {
   overflow: auto;
 }
 
-.dashboard-todo {
-  padding: 4rem 3rem 3rem 7rem;
+.dashboard-img {
+  padding: 3rem 3rem 3rem 6rem;
 }
 
 .tableFixHead thead th { 

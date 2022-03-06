@@ -250,13 +250,21 @@ def task_list():
 def edit_task(task_id):
     task_to_edit = Task.query.filter_by(id=task_id).first()
 
-    # prepares list of choices for taskowner SelectField
+    # prepares unordered list of choices 'user_choices' for taskowner SelectField
     user_list = User.query.all()
     user_choices = [(user.id, user.username) for user in user_list]
-    # Order user_list with the current taskowner at the first place
-    # this works as pre-population of the field with current taskowner name
-    select_prep_index = user_choices.index((task_to_edit.taskowner_id, task_to_edit.taskowner.username))
-    user_choices[0], user_choices[select_prep_index] = user_choices[select_prep_index], user_choices[0]
+
+    # check if taskowner exists (in case the account was deleted previously)
+    if task_to_edit.taskowner_id:
+        # Order user_list with the current taskowner at the first place
+        # this works as pre-population of the field with the current taskowner name
+        # 'person_index' keeps index of the current taskowner in unordered list 'user_choices'
+        person_index = user_choices.index((task_to_edit.taskowner_id, task_to_edit.taskowner.username))
+        # puts the current taskowner at the first place in the unordered list
+        user_choices[0], user_choices[person_index] = user_choices[person_index], user_choices[0]
+    else:
+        user_choices.append(("", ""))
+        user_choices[0], user_choices[-1] = user_choices[-1], user_choices[0]
 
     edit_task_form = EditTaskForm(task_name=task_to_edit.task_name,
                                   due_date=task_to_edit.due_date,
@@ -279,7 +287,7 @@ def edit_task(task_id):
         return redirect("/task_list")
 
 
-@app.route("/account_settings", methods = ["GET", "POST"])
+@app.route("/account_settings", methods=["GET", "POST"])
 @login_required
 def account_settings():
     edit_password_form = EditPasswordForm()

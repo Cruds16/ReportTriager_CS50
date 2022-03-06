@@ -13,28 +13,33 @@ body {
     max-width: 100vw;
     width: 100vw;
     min-height: -webkit-fill-available;
-    min-height: 100vh;
+    height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
+
 .bg-image {
-    background-image: url("/static/images/bulb-g148fb59e1_1920.jpg");
+    background-color: #FFF;
+    /* background-image: url("/static/images/title_attempt2.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
-    height: 100vh;
+    background-position: center; */
 }
 
 .mainpage-bg h1 {
-    color: #e0ebf0;
+    color: #1F2F38;
     text-align: left;
     font-family: 'PT Sans', sans-serif;
     font-weight: 700;
     font-size: 6rem;
     line-height: 90%;
-    padding-top: 46vh;
-    padding-left: 5vw;
+    padding-top: 40vh;
+    padding-left: 8vw;
+}
+
+.mainpage-login {
+    z-index: 1;
 }
 
 .mainpage-login button{
@@ -48,13 +53,13 @@ body {
 .login-form {
     visibility: visible;
     position: relative;
-    top: 8%;
+    top: 5%;
 }
 
 .register-form {
     visibility: collapse;
     position: relative;
-    top: 8%;
+    top: 11%;
 }
 
 .flash-message {
@@ -80,4 +85,16 @@ body {
     color: #FFF;
     border: solid;
     border: 1px;
+  }
+
+  .aeroplane {
+      position: relative;
+      bottom: 25rem;
+      left: 25vw;
+      z-index: 0;
+  }
+
+  .aeroplane img {
+      position: absolute;
+      height: 16.5rem;
   }
