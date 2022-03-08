@@ -50,3 +50,7 @@ For webdesign, I have choosen minimalistic design focused on functionality. Two 
 - security - for actual deployment of the application upgrade to other db system would be required
 - user allocation to specific projects (separate log-ins)
 - addition of visual metrics - graphs to see workload distribution within team; visualization of due deadlines etc.
+
+# Thanks
+
+Big thanks to the amazing course of 'CS50x' by HarvardX and '100 Days of Code: The Complete Python Pro Bootcamp for 2022' by Dr. Angela Yu.
