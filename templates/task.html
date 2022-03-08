@@ -1,79 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "dashboard_layout.html" %}
 
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+{% block title %}
+    Edit Task
+{% endblock %}
 
-    <!-- CSS style -->
-    <link rel="stylesheet" href="/static/css/dashboard_style.css">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Spartan:wght@600;700;900&family=Titillium+Web:wght@400;600;900&display=swap" rel="stylesheet">
-    <title>Report details</title>
-</head>
-<body id="edit-task">
-    <main>
-    <!-- Side Nav -->
-    {% include 'navbar.html' %}
-    
-      <div class="container-fluid p-0 scrollable">
-        <div class="row w-100 h-100 m-0">
-          <div class="col-6">    
-            <h2>EDIT TASK</h2>
-                <form class="form form-horizontal center" method="post" role="form">
-                  {{ form.hidden_tag() }}
-                  {{ form.csrf_token }}
-                  <table class="table table-borderless table-sm">
-                    <tr>
-                      <td>{{ form.task_name.label }}</td>
-                      <td>{{ form.task_name }}</td>
-                    </tr>
-                    <tr>
-                      <td>{{ form.task_owner.label }} </td>
-                      <td>{{ form.task_owner }}</td>
-                    </tr>
-                    <tr>
-                      <td>{{ form.due_date.label }}</td>
-                      <td>{{ form.due_date }}</td>
-                    </tr>
-                    <tr>
-                      <td>{{ form.task_comments.label }}</td>
-                      <td>{{ form.task_comments }}</td>
-                    </tr>
-                    <tr>
-                      <td>{{ form.completed.label }}</td>
-                      <td>{{ form.completed }}</td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td>{{ form.submit }}</td>
-                    </tr>
+{% block main %}
+  <div class="container-fluid p-0 scrollable edit-task">
+    <div class="row w-100 h-100 m-0">
+      <div class="col-6">    
+        <h2>EDIT TASK</h2>
+            <form class="form form-horizontal center" method="post" role="form">
+              {{ form.hidden_tag() }}
+              {{ form.csrf_token }}
+              <table class="table table-borderless table-sm">
+                <tr>
+                  <td>{{ form.task_name.label }}</td>
+                  <td>{{ form.task_name }}</td>
+                </tr>
+                <tr>
+                  <td>{{ form.task_owner.label }} </td>
+                  <td>{{ form.task_owner }}</td>
+                </tr>
+                <tr>
+                  <td>{{ form.due_date.label }}</td>
+                  <td>{{ form.due_date }}</td>
+                </tr>
+                <tr>
+                  <td>{{ form.task_comments.label }}</td>
+                  <td>{{ form.task_comments }}</td>
+                </tr>
+                <tr>
+                  <td>{{ form.completed.label }}</td>
+                  <td>{{ form.completed }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>{{ form.submit }}</td>
+                </tr>
+                </form>
+                <tr>
+                  <td></td>
+                  <td>
+                    <form action="{{ url_for('delete_task', task_id=task.id) }}" method="get">
+                    <input type="submit" class="btn btn-outline-dark btn-sm" value="Delete Task"></input>
                     </form>
-                    <tr>
-                      <td></td>
-                      <td>
-                        <form action="{{ url_for('delete_task', task_id=task.id) }}" method="get">
-                        <input type="submit" class="btn btn-outline-dark btn-sm" value="Delete Task"></input>
-                        </form>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                  
-                  
-        </div>
-      </div>
-
-    </main>
-
-
-    <!-- Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-</body>
-</html>
+                  </td>
+                </tr>
+              </table>
+            </div>
+    </div>
+  </div>
+{% endblock %}

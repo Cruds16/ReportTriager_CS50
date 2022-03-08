@@ -18,13 +18,8 @@ body {
     overflow-y: auto;
 }
 
-
 .bg-image {
     background-color: #FFF;
-    /* background-image: url("/static/images/title_attempt2.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center; */
 }
 
 .mainpage-bg h1 {
@@ -96,5 +91,19 @@ body {
 
   .aeroplane img {
       position: absolute;
-      height: 16.5rem;
+      max-width: 75%;
+      height: auto;
+  }
+
+  @media only screen and (max-width: 765px) {
+    .mainpage-bg h1 {
+        text-align: center;
+        padding-top: 15vh;
+        padding-bottom: 10vh;
+        padding-left: 0;
+    }
+    
+    .aeroplane {
+        display: none;
+    }
   }

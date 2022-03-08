@@ -1,68 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "dashboard_layout.html" %}
 
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+{% block title %}
+    New Report
+{% endblock %}
 
-    <!-- CSS style -->
-    <link rel="stylesheet" href="/static/css/dashboard_style.css">
+{% block main %}
+  <div class="container-fluid p-0 new-report-page scrollable">
+    <h1>NEW REPORT</h1>
+    <form class="form form-horizontal" method="post" role="form">
+      {{ form.hidden_tag() }}
+      {{ form.csrf_token }}
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Spartan:wght@600;700;900&family=Titillium+Web:wght@400;600;900&display=swap" rel="stylesheet">
-    <title>New Report</title>
-</head>
-<body>
-    <main>
-    <!-- Side Nav -->
-    {% include 'navbar.html' %}
-      
-      <div class="container-fluid p-0 new-report-page scrollable">
-        <h1>NEW REPORT</h1>
-        <form class="form form-horizontal" method="post" role="form">
-          {{ form.hidden_tag() }}
-          {{ form.csrf_token }}
-
-          {{ form.date_received.label }}
-          {{ form.date_received }}
-          <br>
-          {{ form.day_zero.label }}
-          {{ form.day_zero }}
-          <br>
-          {{ form.case_version.label }}
-          {{ form.case_version }}
-          <br>
-          {{ form.case_id.label }}
-          {{ form.case_id }}
-          <br>
-          {{ form.other_case_id.label }}
-          {{ form.other_case_id }}
-          <br>
-          {{ form.serious.label }}
-          {{ form.serious }}
-          <br>
-          {{ form.listed.label }}
-          {{ form.listed }}
-          <br>
-          {{ form.expedited.label }}
-          {{ form.expedited }}
-          <br>
-          {{ form.exchange.label }}
-          {{ form.exchange }}
-          <br>
-          {{ form.comments.label }}
-          {{ form.comments }}
-          <br>
-          {{ form.submit }}
-        </form>
-    </main>
-
-
-    <!-- Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-</body>
-</html>
+      {{ form.date_received.label }}
+      {{ form.date_received }}
+      <br>
+      {{ form.day_zero.label }}
+      {{ form.day_zero }}
+      <br>
+      {{ form.case_version.label }}
+      {{ form.case_version }}
+      <br>
+      {{ form.case_id.label }}
+      {{ form.case_id }}
+      <br>
+      {{ form.other_case_id.label }}
+      {{ form.other_case_id }}
+      <br>
+      {{ form.serious.label }}
+      {{ form.serious }}
+      <br>
+      {{ form.listed.label }}
+      {{ form.listed }}
+      <br>
+      {{ form.expedited.label }}
+      {{ form.expedited }}
+      <br>
+      {{ form.exchange.label }}
+      {{ form.exchange }}
+      <br>
+      {{ form.comments.label }}
+      {{ form.comments }}
+      <br>
+      {{ form.submit }}
+    </form>
+{% endblock %}

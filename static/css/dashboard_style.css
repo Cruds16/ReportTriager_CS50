@@ -84,6 +84,12 @@ h2 {
   padding: 3rem 3rem 3rem 6rem;
 }
 
+@media only screen and (max-width: 765px) {
+  .dashboard-img {
+    display: none;
+  }
+}
+
 .tableFixHead thead th { 
   position: sticky;
   top: 0;
@@ -171,11 +177,11 @@ h2 {
   height: 100vh;
 }
 
-#tasklist h1 {
+.tasklist h1 {
   padding: 3rem 3rem 1rem;
 }
 
-#tasklist hr {
+.tasklist hr {
   width: 50%;
   margin: 1rem auto 1rem auto;
   height: 3px;
@@ -185,7 +191,7 @@ h2 {
   padding: 1rem 3rem 1rem;
 }
 
-#edit-task h2 {
+.edit-task h2 {
   padding: 3rem;
 }
 

@@ -70,6 +70,10 @@ class Report(UserMixin, db.Model):
 # db.create_all()
 
 
+def return_error(message, code):
+    return render_template("error.html", message=message, code=code), code
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -156,6 +160,9 @@ def new_report():
 def report(id):
     report = Report.query.filter_by(id=id).first()
 
+    if not report:
+        return return_error("Report does not exist", 404)
+
     report_details_form = ReportForm(date_received=report.date_received, day_zero=report.day_zero,
                                      case_id=report.case_id, case_version=report.case_version,
                                      other_case_id=report.other_case_id, serious=report.serious,
@@ -212,6 +219,9 @@ def logout():
 def delete_task(task_id):
     task_to_delete = Task.query.filter_by(id=task_id).first()
 
+    if not task_to_delete:
+        return return_error("Task does not exist", 404)
+
     db.session.delete(task_to_delete)
     db.session.commit()
     return redirect("/task_list")
@@ -221,6 +231,10 @@ def delete_task(task_id):
 @login_required
 def complete_task(task_id):
     completed_task = Task.query.filter_by(id=task_id).first()
+
+    if not completed_task:
+        return return_error("Task does not exist", 404)
+
     completed_task.completed = True
     db.session.commit()
     return redirect(request.referrer)
@@ -230,6 +244,10 @@ def complete_task(task_id):
 @login_required
 def delete_report(report_id):
     report_to_delete = Report.query.filter_by(id=report_id).first()
+
+    if not report_to_delete:
+        return return_error("Report does not exist", 404)
+
     db.session.delete(report_to_delete)
     db.session.commit()
     return redirect("/dashboard")
@@ -249,6 +267,9 @@ def task_list():
 @login_required
 def edit_task(task_id):
     task_to_edit = Task.query.filter_by(id=task_id).first()
+
+    if not task_to_edit:
+        return return_error("Task does not exist", 404)
 
     # prepares unordered list of choices 'user_choices' for taskowner SelectField
     user_list = User.query.all()
@@ -284,7 +305,7 @@ def edit_task(task_id):
             task_to_edit.completed = edit_task_form.completed.data
             db.session.commit()
 
-        return redirect("/task_list")
+        return redirect(f"/report/{task_to_edit.report_id}")
 
 
 @app.route("/account_settings", methods=["GET", "POST"])
