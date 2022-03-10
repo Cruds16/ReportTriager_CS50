@@ -1,5 +1,4 @@
 # Report Triager
-### Video demo: [url](/demo.com)
 
  ![paperplane](/static/images/lietadielko_rm.png)
 
@@ -24,6 +23,9 @@ This tool - Report Triager - aims to help workers in pharmacovigilance to track 
 - ability to mark complete, edit or delete individual To Do's
 - overview of pending and completed To Do items (personal or all)
 - ability to change user password/delete user account
+
+# Set-up
+If anyone would be interested to you use the code, I can only recommend to install dependencies as listed in requirements.txt. For creating db for the first time, uncomment line 72 in main.py (or add somewhere to the code 'db.create_all()').
 
 # Technical solutions
 
