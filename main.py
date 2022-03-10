@@ -3,10 +3,11 @@ from forms import RegisterUser, LoginUser, ReportForm, AddTaskForm, EditTaskForm
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
+import os
 
 # Configure Flask app
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '45678this_is_just_testing_key_dont_get_excited0123'
+app.config['SECRET_KEY'] = os.environ.get("app-key")
 
 # Configure login manager
 login_manager = LoginManager()
@@ -353,3 +354,4 @@ def account_settings():
 if __name__ == "__main__":
 
     app.run(debug=True)
+
