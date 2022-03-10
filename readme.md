@@ -25,7 +25,7 @@ This tool - Report Triager - aims to help workers in pharmacovigilance to track 
 - ability to change user password/delete user account
 
 # Set-up
-If anyone would be interested to you use the code, I can only recommend to install dependencies as listed in requirements.txt. For creating db for the first time, uncomment line 72 in main.py (or add somewhere to the code 'db.create_all()').
+If anyone would be interested to you use the code, I can only recommend installing dependencies as listed in requirements.txt. For creating db for the first time, uncomment line 73 in main.py (or add somewhere to the code 'db.create_all()').
 
 # Technical solutions
 
