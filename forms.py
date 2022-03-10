@@ -26,6 +26,7 @@ class ReportForm(FlaskForm):
                                                         "Follow-up 4", "Follow-up 5",
                                                         "Follow-up 6", "Follow-up 7"])
     other_case_id = StringField("Other Case IDs")
+    drug = StringField("Drug", validators=[DataRequired()])
     serious = SelectField("Serious", choices=['Serious', 'Non-serious', 'N/A'])
     listed = SelectField("Listed", choices=['N/A', 'Listed', 'Unlisted'])
     expedited = BooleanField("Expedited to RA")

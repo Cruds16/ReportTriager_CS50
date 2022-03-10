@@ -56,6 +56,7 @@ class Report(UserMixin, db.Model):
     case_id = db.Column(db.String(250), nullable=True)
     case_version = db.Column(db.String(250), nullable=True)
     other_case_id = db.Column(db.String(250), nullable=True)
+    drug = db.Column(db.String(250), nullable=True)
     serious = db.Column(db.String(250), nullable=True)
     listed = db.Column(db.String(250), nullable=True)
     expedited = db.Column(db.Boolean, nullable=True)
@@ -65,6 +66,7 @@ class Report(UserMixin, db.Model):
     # backref establishes a collection of Task objects on Report called report_tasks
     # It also establishes a .report attribute on Task which will refer to the parent Report object.
     report_tasks = db.relationship("Task", backref="report")
+
 
 # creates db
 # db.create_all()
@@ -144,6 +146,7 @@ def new_report():
                             case_id=report_form.case_id.data,
                             case_version=report_form.case_version.data,
                             other_case_id=report_form.other_case_id.data,
+                            drug=report_form.drug.data,
                             serious=report_form.serious.data,
                             listed=report_form.listed.data,
                             expedited=report_form.expedited.data,
@@ -165,9 +168,10 @@ def report(id):
 
     report_details_form = ReportForm(date_received=report.date_received, day_zero=report.day_zero,
                                      case_id=report.case_id, case_version=report.case_version,
-                                     other_case_id=report.other_case_id, serious=report.serious,
-                                     listed=report.listed, expedited=report.expedited,
-                                     exchange=report.exchange, comments=report.comments)
+                                     other_case_id=report.other_case_id, drug=report.drug,
+                                     serious=report.serious, listed=report.listed,
+                                     expedited=report.expedited, exchange=report.exchange,
+                                     comments=report.comments)
     report_details_form.submit.label.text = 'Update Report'
 
     report_task_form = AddTaskForm()
@@ -191,6 +195,7 @@ def report(id):
             report.case_id = report_details_form.case_id.data
             report.case_version = report_details_form.case_version.data
             report.other_case_id = report_details_form.other_case_id.data
+            report.drug = report_details_form.drug.data
             report.serious = report_details_form.serious.data
             report.listed = report_details_form.listed.data
             report.expedited = report_details_form.expedited.data
