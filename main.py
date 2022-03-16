@@ -7,16 +7,14 @@ import os
 
 # Configure Flask app
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'testesttest'
-
-# os.environ.get("app-key")
+app.config['SECRET_KEY'] = os.environ.get("app-key")
 
 # Configure login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 # Configure db
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///triager.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///triager.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -355,5 +353,5 @@ def account_settings():
 
 if __name__ == "__main__":
 
-    app.run(debug=True)
+    app.run()
 
