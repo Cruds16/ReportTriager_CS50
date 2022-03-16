@@ -72,7 +72,7 @@ class Report(UserMixin, db.Model):
 
 
 # creates db
-# db.create_all()
+db.create_all()
 
 
 def return_error(message, code):
