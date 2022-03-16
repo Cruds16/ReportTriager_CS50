@@ -7,7 +7,9 @@ import os
 
 # Configure Flask app
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("app-key")
+app.config['SECRET_KEY'] = 'testesttest'
+
+# os.environ.get("app-key")
 
 # Configure login manager
 login_manager = LoginManager()
